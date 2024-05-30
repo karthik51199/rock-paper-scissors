@@ -1,11 +1,11 @@
 const options = ['rock', 'paper', 'scissors']
 function getComputerChoice() {
     const cc = Math.floor(Math.random() * 10 ) % 3
-    return options[cc];
+    return options[cc]
 }
 
 function play(psl, csl) {
-    console.log(psl,csl)
+    console.log(`player: ${psl}, computer: ${csl}`)
     if (psl === csl) {
        return 'Nobody' 
     }
@@ -19,38 +19,56 @@ function play(psl, csl) {
     }
 }
 
-function getPlayerChoice() {
-    const psl = prompt('Enter Rock/paper/Scissors').toLocaleLowerCase()
-    if (!options.includes(psl)) {
-        return 'invalid input'
-    }
-    return psl
+function displayResult(result) {
+    const myDiv = document.querySelector('.myDiv')
+    myDiv.innerText = `${result} won for this round\n Player score: ${ps} Computer score: ${cs}\n`
 }
 
-function playGame() {
-    let ps = 0, cs = 0;
-    for(let i=0; i<5; i++) {
-        const psl = getPlayerChoice()
-        const csl = getComputerChoice()
-        const result = play(psl, csl)
-        switch(result) {
-            case 'Player':
-                ps++
-                break
-            case 'Computer':
-                cs++
-                break
-            case 'Nobody':
-            break
-        }
+function playGame(psl) {
+    const csl = getComputerChoice()
+    const result = play(psl, csl)
+    if (result === 'Player') ps++
+    else if (result === 'Computer') cs++
+    displayResult(result)
+    if(ps === 5 || cs === 5) {
+        myDiv.innerText += `Game ended\n Overall winner ${ps>cs? 'Player':'Computer'}`
+        ps = 0
+        cs = 0
     }
-    let results;
-    if (ps > cs) {
-        results = 'Player'
-    } else if (cs > ps) {
-        results = 'Computer'
-    } else {
-        results = 'Nobody'
-    }
-    console.log(results + ` won. Player score: ${ps}, Computer score: ${cs}` )
 }
+
+const Rock = document.createElement('button')
+Rock.innerText = 'Rock'
+Rock.addEventListener('click', ()=> {
+    console.log('Rock clicked')
+    playGame('rock')
+})
+
+const Paper = document.createElement('button')
+Paper.innerText = 'Paper'
+Paper.addEventListener('click', ()=> {
+    console.log('Paper clicked')
+    playGame('paper')
+})
+
+const Scissors = document.createElement('button')
+Scissors.innerText = 'Scissors'
+Scissors.addEventListener('click', ()=> {
+    console.log('Scissors clicked')
+    playGame('scissors')
+})
+
+document.body.appendChild(Rock)
+document.body.appendChild(Paper)
+document.body.appendChild(Scissors)
+
+const myDiv = document.createElement('div')
+myDiv.className = 'myDiv'
+document.body.appendChild(myDiv)
+
+let ps=0
+let cs=0
+
+
+
+// console.log('haiiiiiiii')
